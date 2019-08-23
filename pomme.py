@@ -12,7 +12,6 @@ import argparse
 def main():
     # Parse command line args
     args = getArgs()
-
     interval = args.interval
     pause = args.pause
 
@@ -35,8 +34,7 @@ def getArgs():
                         nargs='?',
                         default=3,
                         help='How long the pauses last between intervals')
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 def printInfo(interval, pause):
