@@ -53,10 +53,13 @@ def getArgs():
 
 def initialise(interval, pause):
     # Print out timer information
-    print("Timer starting. Each interval will last "
+    print(Colours.GREEN
+          + "Timer starting. Each interval will last "
           + str(interval) + " minutes, with a "
           + str(pause) + " minute pause between them.\n"
-          + "\nPress Ctrl+c at any time to quit.\n")
+          + Colours.YELLOW
+          + "\nPress Ctrl+c at any time to quit.\n"
+          + Colours.RESET)
     # Hide the cursor while the program runs
     os.system("setterm -cursor off")
 
@@ -74,7 +77,17 @@ def countInterval(duration):
 
 def quit():
     os.system("setterm -cursor on")
-    print("\rTimer has been stopped!")
+    print(Colours.YELLOW
+          + "\rTimer has been stopped!"
+          + Colours.RESET)
+
+
+# Some colours for prettier display
+class Colours:
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    RESET = '\033[0m'
 
 
 # Run the program
