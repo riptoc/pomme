@@ -65,14 +65,26 @@ def initialise(interval, pause):
 
 
 def countPause(duration):
-    print("Time for a " + str(duration) + " minute break")
-    time.sleep(duration * 60)
+    print(Colours.GREEN + "Time for a " + str(duration) + " minute break!"
+          + Colours.RESET)
+    createTimer(duration)
 
 
 def countInterval(duration):
-    print(str(duration) + " minute timer is active!")
-    time.sleep(duration * 60)
-    # TODO: Display countdown
+    print(Colours.BLUE + str(duration) + " minute timer is active!"
+          + Colours.RESET)
+    createTimer(duration)
+
+
+# Create a timer that counts down to 0 from specified duration
+def createTimer(duration):
+    duration *= 60
+    while duration:
+        mins, secs = divmod(duration, 60)
+        counter = '{:02d}:{:02d}'.format(mins, secs)
+        print(counter, end="\r")
+        time.sleep(1)
+        duration -= 1
 
 
 def quit():
