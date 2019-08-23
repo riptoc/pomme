@@ -6,6 +6,8 @@
 
 # Imports
 import argparse
+import time
+import os
 
 
 # Main program init function
@@ -16,7 +18,19 @@ def main():
     pause = args.pause
 
     # Print info about current timer
-    printInfo(interval, pause)
+    initialise(interval, pause)
+
+    # Start the timer loop
+    while True:
+        try:
+            # Start and repeat timers
+            countInterval(interval)
+            countPause(pause)
+        except KeyboardInterrupt:
+            # Reset the cursor and exit
+            # TODO: Pretty this up a bit
+            quit()
+            break
 
 
 def getArgs():
@@ -37,11 +51,30 @@ def getArgs():
     return parser.parse_args()
 
 
-def printInfo(interval, pause):
+def initialise(interval, pause):
     # Print out timer information
     print("Timer starting. Each interval will last "
           + str(interval) + " minutes, with a "
-          + str(pause) + " minute pause between them.\n")
+          + str(pause) + " minute pause between them.\n"
+          + "\nPress Ctrl+c at any time to quit.\n")
+    # Hide the cursor while the program runs
+    os.system("setterm -cursor off")
+
+
+def countPause(duration):
+    print("Time for a " + str(duration) + " minute break")
+    time.sleep(duration * 60)
+
+
+def countInterval(duration):
+    print(str(duration) + " minute timer is active!")
+    time.sleep(duration * 60)
+    # TODO: Display countdown
+
+
+def quit():
+    os.system("setterm -cursor on")
+    print("\rTimer has been stopped!")
 
 
 # Run the program
