@@ -65,13 +65,15 @@ def initialise(interval, pause):
 
 
 def countPause(duration):
-    print(Colours.GREEN + "Time for a " + str(duration) + " minute break!"
+    print(Colours.GREEN +
+          "Time for a " + str(duration) + " minute break!"
           + Colours.RESET)
     createTimer(duration)
 
 
 def countInterval(duration):
-    print(Colours.BLUE + str(duration) + " minute timer is active!"
+    print(Colours.BLUE +
+          str(duration) + " minute timer is active!"
           + Colours.RESET)
     createTimer(duration)
 
