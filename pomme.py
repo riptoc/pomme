@@ -28,7 +28,6 @@ def main():
             count_pause(pause)
         except KeyboardInterrupt:
             # Reset the cursor and exit
-            # TODO: Pretty this up a bit
             quit_timer()
             break
 
