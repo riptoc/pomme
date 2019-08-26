@@ -3,35 +3,70 @@
 """
   Pomme: A very basic cli pomodoro timer
 """
-
-# Imports
 import argparse
 import os
 import time
 
 
-# Main program init function
-def main():
-    # Parse command line args
-    args = get_args()
-    interval = args.interval
-    pause = args.pause
+class Pomme:
+    def __init__(self, interval, pause):
+        # Set the duration in minutes
+        self.interval = interval
+        self.pause = pause
 
-    # Print info about current timer
-    initialise(interval, pause)
+        # Print out timer information
+        print(Colours.GREEN
+              + "Timer starting. Each interval will last "
+              + str(interval) + " minutes, with a "
+              + str(pause) + " minute pause between them.\n"
+              + Colours.YELLOW
+              + "\nPress Ctrl+c at any time to quit.\n"
+              + Colours.RESET)
 
-    # Start the timer loop
-    while True:
-        try:
-            # Start and repeat timers
-            count_interval(interval)
-            os.popen('notify-send "Your timer is complete, taking a ' + str(pause) + ' minute break"')
-            count_pause(pause)
-            os.popen('notify-send "Your break is over, timer started again"')
-        except KeyboardInterrupt:
-            # Reset the cursor and exit
-            quit_timer()
-            break
+        # Hide the cursor while the program runs
+        os.system("setterm -cursor off")
+        os.system('notify-send "Starting timer"')
+
+    # The main timer interval
+    def run_interval(self, interval):
+        print(Colours.BLUE +
+              str(interval) + " minute timer is active!"
+              + Colours.RESET)
+        os.system('notify-send "Timer started"')
+        self.count(interval)
+
+    # Pause between intervals
+    def run_pause(self, pause):
+        print(Colours.GREEN +
+              "Time for a " + str(pause) + " minute break!\a"
+              + Colours.RESET)
+        os.system('notify-send "Your timer is complete, taking a ' + str(pause) + ' minute break"')
+        self.count(pause)
+
+    @staticmethod
+    def count(duration):
+        duration *= 60
+        while duration:
+            mins, secs = divmod(duration, 60)
+            counter = '{:02d}:{:02d}'.format(mins, secs)
+            print(counter, end="\r")
+            time.sleep(1)
+            duration -= 1
+
+    @staticmethod
+    def quit():
+        os.system("setterm -cursor on")
+        print(Colours.YELLOW
+              + "\rTimer has been stopped!"
+              + Colours.RESET)
+
+
+# Some colours for prettier display
+class Colours:
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    RESET = '\033[0m'
 
 
 def get_args():
@@ -52,58 +87,27 @@ def get_args():
     return parser.parse_args()
 
 
-def initialise(interval, pause):
-    # Print out timer information
-    print(Colours.GREEN
-          + "Timer starting. Each interval will last "
-          + str(interval) + " minutes, with a "
-          + str(pause) + " minute pause between them.\n"
-          + Colours.YELLOW
-          + "\nPress Ctrl+c at any time to quit.\n"
-          + Colours.RESET)
-    # Hide the cursor while the program runs
-    os.system("setterm -cursor off")
-    os.popen('notify-send "Starting timer"')
+# Main program init function
+def main():
+    # Parse command line args
+    args = get_args()
+    interval = args.interval
+    pause = args.pause
 
+    # Print info about current timer
+    timer = Pomme(interval, pause)
 
-def count_pause(duration):
-    print(Colours.GREEN +
-          "Time for a " + str(duration) + " minute break!\a"
-          + Colours.RESET)
-    create_timer(duration)
-
-
-def count_interval(duration):
-    print(Colours.BLUE +
-          str(duration) + " minute timer is active!\a"
-          + Colours.RESET)
-    create_timer(duration)
-
-
-# Create a timer that counts down to 0 from specified duration
-def create_timer(duration):
-    duration *= 60
-    while duration:
-        mins, secs = divmod(duration, 60)
-        counter = '{:02d}:{:02d}'.format(mins, secs)
-        print(counter, end="\r")
-        time.sleep(1)
-        duration -= 1
-
-
-def quit_timer():
-    os.system("setterm -cursor on")
-    print(Colours.YELLOW
-          + "\rTimer has been stopped!"
-          + Colours.RESET)
-
-
-# Some colours for prettier display
-class Colours:
-    YELLOW = '\033[93m'
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    RESET = '\033[0m'
+    # Start the timer loop
+    while True:
+        try:
+            # Main timer interval
+            timer.run_interval(interval)
+            # Timer pause
+            timer.run_pause(pause)
+        except KeyboardInterrupt:
+            # Reset the cursor and exit
+            timer.quit()
+            break
 
 
 # Run the program
