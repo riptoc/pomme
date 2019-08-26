@@ -6,14 +6,14 @@
 
 # Imports
 import argparse
-import time
 import os
+import time
 
 
 # Main program init function
 def main():
     # Parse command line args
-    args = getArgs()
+    args = get_args()
     interval = args.interval
     pause = args.pause
 
@@ -24,16 +24,16 @@ def main():
     while True:
         try:
             # Start and repeat timers
-            countInterval(interval)
-            countPause(pause)
+            count_interval(interval)
+            count_pause(pause)
         except KeyboardInterrupt:
             # Reset the cursor and exit
             # TODO: Pretty this up a bit
-            quit()
+            quit_timer()
             break
 
 
-def getArgs():
+def get_args():
     # Parse command line arguments and set up
     # options/help etc.
     parser = argparse.ArgumentParser(
@@ -64,22 +64,22 @@ def initialise(interval, pause):
     os.system("setterm -cursor off")
 
 
-def countPause(duration):
+def count_pause(duration):
     print(Colours.GREEN +
           "Time for a " + str(duration) + " minute break!"
           + Colours.RESET)
-    createTimer(duration)
+    create_timer(duration)
 
 
-def countInterval(duration):
+def count_interval(duration):
     print(Colours.BLUE +
           str(duration) + " minute timer is active!"
           + Colours.RESET)
-    createTimer(duration)
+    create_timer(duration)
 
 
 # Create a timer that counts down to 0 from specified duration
-def createTimer(duration):
+def create_timer(duration):
     duration *= 60
     while duration:
         mins, secs = divmod(duration, 60)
@@ -89,7 +89,7 @@ def createTimer(duration):
         duration -= 1
 
 
-def quit():
+def quit_timer():
     os.system("setterm -cursor on")
     print(Colours.YELLOW
           + "\rTimer has been stopped!"
