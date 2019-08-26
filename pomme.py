@@ -25,7 +25,9 @@ def main():
         try:
             # Start and repeat timers
             count_interval(interval)
+            os.popen('notify-send "Your timer is complete, taking a ' + str(pause) + ' minute break"')
             count_pause(pause)
+            os.popen('notify-send "Your break is over, timer started again"')
         except KeyboardInterrupt:
             # Reset the cursor and exit
             quit_timer()
@@ -61,6 +63,7 @@ def initialise(interval, pause):
           + Colours.RESET)
     # Hide the cursor while the program runs
     os.system("setterm -cursor off")
+    os.popen('notify-send "Starting timer"')
 
 
 def count_pause(duration):
