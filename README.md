@@ -1,5 +1,5 @@
 # Pomme
-A very simple command line pomodoro timer.
+A very simple cli pomodoro timer for linux.
 
 ## Usage
 Supply two command line arguments to specify the length of the intervals and pauses (in minutes):
