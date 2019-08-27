@@ -25,6 +25,7 @@ class Pomme:
 
         # Hide the cursor while the program runs
         os.system("setterm -cursor off")
+
         os.system('notify-send "Starting timer"')
 
     # The main timer interval
@@ -43,9 +44,12 @@ class Pomme:
         os.system('notify-send "Your timer is complete, taking a ' + str(pause) + ' minute break"')
         self.count(pause)
 
+    # The actual timer/countdown
     @staticmethod
     def count(duration):
+        # Convert to minutes
         duration *= 60
+        # Print out a timer
         while duration:
             mins, secs = divmod(duration, 60)
             counter = '{:02d}:{:02d}'.format(mins, secs)
@@ -53,9 +57,10 @@ class Pomme:
             time.sleep(1)
             duration -= 1
 
+    # Run when closing the timer
     @staticmethod
     def quit():
-        os.system("setterm -cursor on")
+        os.system("setterm -cursor on")  # Restart terminal cursor
         print(Colours.YELLOW
               + "\rTimer has been stopped!"
               + Colours.RESET)
@@ -89,12 +94,12 @@ def get_args():
 
 # Main program init function
 def main():
-    # Parse command line args
+    # Parse command line args, retrieve timer settings
     args = get_args()
     interval = args.interval
     pause = args.pause
 
-    # Print info about current timer
+    # Initialise timer
     timer = Pomme(interval, pause)
 
     # Start the timer loop
